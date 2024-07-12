@@ -12,7 +12,7 @@ class Application {
 	@Bean
 	fun commandLineRunner(applicationContext: ApplicationContext): CommandLineRunner {
 		return CommandLineRunner { args: Array<String> ->
-			val commandLine = CommandLine(applicationContext.getBean(ConvertCommand::class.java))
+			val commandLine = CommandLine(applicationContext.getBean(ConverterCLI::class.java))
 			val exitCode = commandLine.execute(*args)
 			System.exit(exitCode)
 		}

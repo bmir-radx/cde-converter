@@ -74,6 +74,14 @@
 			<artifactId>cedar-artifact-library</artifactId>
 			<version>2.6.42-SNAPSHOT</version>
 		</dependency>
+		<dependency>
+			<groupId>org.metadatacenter</groupId>
+			<artifactId>cedar-nih_tools</artifactId>
+			<version>2.6.42-SNAPSHOT</version>
+<!--			<scope>compile</scope>-->
+			<scope>system</scope>
+			<systemPath>${project.basedir}/cedar-nih-tools-2.6.42-SNAPSHOT-jar-with-dependencies.jar</systemPath>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -83,6 +91,13 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.jetbrains.kotlin</groupId>
