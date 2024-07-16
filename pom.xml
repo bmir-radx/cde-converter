@@ -82,6 +82,11 @@
 			<scope>system</scope>
 			<systemPath>${project.basedir}/cedar-nih-tools-2.6.42-SNAPSHOT-jar-with-dependencies.jar</systemPath>
 		</dependency>
+		<dependency>
+			<groupId>edu.stanford.bmir.radx</groupId>
+			<artifactId>radx-data-dictionary-validator-lib</artifactId>
+			<version>1.2.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>

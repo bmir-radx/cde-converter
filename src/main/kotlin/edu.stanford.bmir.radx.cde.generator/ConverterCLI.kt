@@ -1,9 +1,14 @@
 package edu.stanford.bmir.radx.cde.generator
 
+import edu.stanford.bmir.radx.datadictionary.lib.Csv
+import edu.stanford.bmir.radx.datadictionary.lib.CsvParser
 import org.springframework.stereotype.Component
 import picocli.CommandLine
 import java.io.IOException
+import java.nio.file.Files
+import java.nio.file.Path
 import java.util.concurrent.Callable
+
 
 @Component
 @CommandLine.Command(name = "convert", mixinStandardHelpOptions = true, version = ["0.0.1"],
@@ -40,4 +45,14 @@ class ConverterCLI(
         return 0
     }
 
+    @Throws(IOException::class)
+    private fun parseCsv(pth: Path): Csv {
+        Files.newInputStream(pth).use { inputStream -> return CsvParser().parseCsv(inputStream) }
+    }
+
+    @Throws(IOException::class)
+    fun convertDataDictionary(path: Path) {
+        val csv = parseCsv(path)
+        val dataElements = DataDictionaryConverter().convert(csv)
+    }
 }
