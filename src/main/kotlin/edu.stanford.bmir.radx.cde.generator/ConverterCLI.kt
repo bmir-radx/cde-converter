@@ -20,11 +20,11 @@ class ConverterCLI(
 
     @CommandLine.Option(names = ["-i", "--input"], required = true,
             description = ["Path to the input file containing CDEs to convert."])
-    lateinit var inputFile: String
+    lateinit var inputFile: Path
 
     @CommandLine.Option(names = ["-o", "--output"], required = true,
             description = ["Path to the output file to write after conversion."])
-    lateinit var outputFile: String
+    lateinit var outputFile: Path
 
     @CommandLine.Option(names = ["-v", "--validate"], defaultValue = "false",
             description = ["Validate against CEDAR."])
@@ -43,16 +43,5 @@ class ConverterCLI(
             validator.validate(dataElements)
         }
         return 0
-    }
-
-    @Throws(IOException::class)
-    private fun parseCsv(pth: Path): Csv {
-        Files.newInputStream(pth).use { inputStream -> return CsvParser().parseCsv(inputStream) }
-    }
-
-    @Throws(IOException::class)
-    fun convertDataDictionary(path: Path) {
-        val csv = parseCsv(path)
-        val dataElements = DataDictionaryConverter().convert(csv)
     }
 }

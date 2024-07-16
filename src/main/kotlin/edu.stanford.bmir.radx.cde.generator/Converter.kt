@@ -9,9 +9,9 @@ import org.metadatacenter.artifacts.model.core.builders.FieldSchemaArtifactBuild
 import org.metadatacenter.artifacts.model.core.builders.ListFieldBuilder
 import org.metadatacenter.artifacts.model.renderer.JsonSchemaArtifactRenderer
 import org.springframework.stereotype.Component
-import java.io.File
 import java.io.FileInputStream
 import java.io.InputStream
+import java.nio.file.Path
 
 @Component
 class Converter {
@@ -19,8 +19,8 @@ class Converter {
     private val objectMapper = ObjectMapper()
     private val renderer = JsonSchemaArtifactRenderer()
 
-    fun convert(inputFile: String): List<ObjectNode> {
-        val inputStream: InputStream = FileInputStream(File(inputFile))
+    fun convert(path: Path): List<ObjectNode> {
+        val inputStream: InputStream = FileInputStream(path.toFile())
         val jsonString = String(inputStream.readAllBytes())
         val tree: JsonNode = objectMapper.readTree(jsonString)
         return tree.map { convertNode(it) }
