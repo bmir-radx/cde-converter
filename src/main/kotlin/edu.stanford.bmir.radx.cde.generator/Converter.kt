@@ -1,6 +1,5 @@
 package edu.stanford.bmir.radx.cde.generator
 
-import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.metadatacenter.artifacts.model.core.FieldSchemaArtifact
@@ -9,9 +8,6 @@ import org.metadatacenter.artifacts.model.core.builders.FieldSchemaArtifactBuild
 import org.metadatacenter.artifacts.model.core.builders.ListFieldBuilder
 import org.metadatacenter.artifacts.model.renderer.JsonSchemaArtifactRenderer
 import org.springframework.stereotype.Component
-import java.io.FileInputStream
-import java.io.InputStream
-import java.nio.file.Path
 
 @Component
 class Converter {
@@ -41,7 +37,7 @@ class Converter {
             "Text" -> FieldSchemaArtifact.textFieldBuilder()
             "Number" -> FieldSchemaArtifact.numericFieldBuilder()
                     .withNumericType(NumericType.INTEGER)
-            "edu.stanford.bmir.radx.cde.generator.Value List" -> getListFieldBuilder(values)
+            "Value List" -> getListFieldBuilder(values)
             else -> FieldSchemaArtifact.listFieldBuilder() // Throw an exception
         }
         return builder
