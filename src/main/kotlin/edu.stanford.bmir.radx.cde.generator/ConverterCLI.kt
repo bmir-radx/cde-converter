@@ -26,16 +26,22 @@ class ConverterCLI(
             description = ["Path to the output file to write after conversion."])
     lateinit var outputFile: Path
 
-    @CommandLine.Option(names = ["-f", "--format"], description = ["The format to convert to. Valid values: \${COMPLETION-CANDIDATES}"], required = true)
+    @CommandLine.Option(names = ["-f", "--format"],
+            description = ["The format to convert to. Valid values: \${COMPLETION-CANDIDATES}"], required = true)
     lateinit var format: InputFormat
 
-    @CommandLine.Option(names = ["-v", "--validate"], defaultValue = "false",
-            description = ["Validate against CEDAR."])
-    var doValidation: Boolean = false
+    @CommandLine.Option(names = ["-c", "--cedar"],
+            description = ["The operation to perform against CEDAR. Valid values: \${COMPLETION-CANDIDATES}"],
+            required = false)
+    var cedarOperation: CedarOperation? = null
 
     @CommandLine.Option(names = ["-a", "--apiKey"], required = false,
             description = ["Validate against CEDAR."])
     lateinit var apiKey: String
+
+    @CommandLine.Option(names = ["-t", "--target"], required = false,
+            description = ["FolderId to which CEDAR artifacts should be uploaded."])
+    lateinit var target: String
 
     @Throws(IOException::class)
     override fun call(): Int {
@@ -43,9 +49,13 @@ class ConverterCLI(
         val dataElements = parser.fileToDataElements(inputFile)
         val artifacts = converter.convert(dataElements)
         jsonWriter.writeJsonFile(artifacts, outputFile)
-        if (doValidation) {
-            val validator = Validator(apiKey)
-            validator.validate(artifacts)
+        if (cedarOperation != null) {
+            val requester = CedarRequester(apiKey)
+            when (cedarOperation) {
+                CedarOperation.VALIDATE -> requester.validate(artifacts)
+                CedarOperation.UPLOAD -> requester.upload(artifacts, target)
+                null -> TODO()
+            }
         }
         return 0
     }
