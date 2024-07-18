@@ -64,6 +64,7 @@ class ConverterCLI(
         return when (inputFormat) {
             InputFormat.GCB -> GCBParser()
             InputFormat.DATADICTIONARY -> DataDictParser()
+            InputFormat.JSON -> JsonParser()
         }
     }
 
