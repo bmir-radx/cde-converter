@@ -36,12 +36,27 @@ class ConverterCLI(
 
     @Throws(IOException::class)
     override fun call(): Int {
-        val dataElements = converter.convert(inputFile)
-        jsonWriter.writeJsonFile(dataElements, outputFile)
+//        convertDataDictionary(inputFile)
+//        val dataElements = converter.convert(inputFile)
+//        val dataElements = GCBParser().fileToDataElements(inputFile, "2_RADx_Global_Codebook")
+        val dataElements = DataDictParser().fileToDataElements(inputFile, "")
+        val artifacts = converter.convert(dataElements)
+        jsonWriter.writeJsonFile(artifacts, outputFile)
         if (doValidation) {
             val validator = Validator(apiKey)
-            validator.validate(dataElements)
+            validator.validate(artifacts)
         }
         return 0
+    }
+
+    @Throws(IOException::class)
+    private fun parseCsv(pth: Path): Csv {
+        Files.newInputStream(pth).use { inputStream -> return CsvParser().parseCsv(inputStream) }
+    }
+
+    @Throws(IOException::class)
+    fun convertDataDictionary(path: Path) {
+        val csv = parseCsv(path)
+        val dataElements = DataDictionaryConverter().convert(csv)
     }
 }
