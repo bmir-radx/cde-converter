@@ -26,6 +26,9 @@ class ConverterCLI(
             description = ["Path to the output file to write after conversion."])
     lateinit var outputFile: Path
 
+    @CommandLine.Option(names = ["-f", "--format"], description = ["The format to convert to. Valid values: \${COMPLETION-CANDIDATES}"], required = true)
+    lateinit var format: InputFormat
+
     @CommandLine.Option(names = ["-v", "--validate"], defaultValue = "false",
             description = ["Validate against CEDAR."])
     var doValidation: Boolean = false
@@ -36,10 +39,8 @@ class ConverterCLI(
 
     @Throws(IOException::class)
     override fun call(): Int {
-//        convertDataDictionary(inputFile)
-//        val dataElements = converter.convert(inputFile)
-//        val dataElements = GCBParser().fileToDataElements(inputFile, "2_RADx_Global_Codebook")
-        val dataElements = DataDictParser().fileToDataElements(inputFile, "")
+        val parser = pickParser(format)
+        val dataElements = parser.fileToDataElements(inputFile)
         val artifacts = converter.convert(dataElements)
         jsonWriter.writeJsonFile(artifacts, outputFile)
         if (doValidation) {
@@ -47,6 +48,13 @@ class ConverterCLI(
             validator.validate(artifacts)
         }
         return 0
+    }
+
+    private fun pickParser(inputFormat: InputFormat): Parser {
+        return when (inputFormat) {
+            InputFormat.GCB -> GCBParser()
+            InputFormat.DATADICTIONARY -> DataDictParser()
+        }
     }
 
     @Throws(IOException::class)

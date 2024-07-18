@@ -1,4 +1,5 @@
 package edu.stanford.bmir.radx.cde.generator
 
-class InputFormat {
+enum class InputFormat {
+    GCB, DATADICTIONARY
 }

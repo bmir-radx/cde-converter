@@ -19,20 +19,11 @@ class Converter {
     private val objectMapper = ObjectMapper()
     private val renderer = JsonSchemaArtifactRenderer()
 
-//    fun convert(path: Path): List<ObjectNode> {
-//        val inputStream: InputStream = FileInputStream(path.toFile())
-//        val jsonString = String(inputStream.readAllBytes())
-//        val tree: JsonNode = objectMapper.readTree(jsonString)
-//        return tree.map { convertNode(it) }
-//    }
-
     fun convert(cdes: List<DataElement>): List<ObjectNode> {
         return cdes.map { convertNode(it) }
     }
 
     private fun convertNode(dataElement: DataElement): ObjectNode {
-//    private fun convertNode(node: JsonNode): ObjectNode {
-//        val dataElement: DataElement = readNode(node)
         val artifact: FieldSchemaArtifact = makeCedarArtifact(dataElement)
         return renderer.renderFieldSchemaArtifact(artifact)
     }
