@@ -78,9 +78,8 @@
 			<groupId>org.metadatacenter</groupId>
 			<artifactId>cedar-nih_tools</artifactId>
 			<version>2.6.42-SNAPSHOT</version>
-<!--			<scope>compile</scope>-->
-			<scope>system</scope>
-			<systemPath>${project.basedir}/cedar-nih-tools-2.6.42-SNAPSHOT-jar-with-dependencies.jar</systemPath>
+<!--			<scope>system</scope>-->
+<!--			<systemPath>${project.basedir}/cedar-nih-tools-2.6.42-SNAPSHOT-jar-with-dependencies.jar</systemPath>-->
 		</dependency>
 		<dependency>
 			<groupId>edu.stanford.bmir.radx</groupId>

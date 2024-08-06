@@ -2,9 +2,10 @@ package edu.stanford.bmir.radx.cde.generator
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
-import org.metadatacenter.nih.ingestor.exceptions.RESTRequestFailedException
 import org.metadatacenter.nih.ingestor.poster.HttpRequestConstants
+import org.metadatacenter.nih.ingestor.poster.HttpRequester
 import org.metadatacenter.nih.ingestor.poster.RequestURLPrefixes
+import org.metadatacenter.nih.ingestor.poster.RetryableRequester
 import java.io.IOException
 import java.net.HttpURLConnection
 import java.net.URL
@@ -46,8 +47,10 @@ class CedarRequester(private val apiKey: String) {
 
     @Throws(IOException::class)
     fun validate(cdes: List<ObjectNode>) {
+        val httpRequester = HttpRequester(apiKey)
+        val retryableRequester = RetryableRequester(httpRequester, "validate")
         for (cde in cdes) {
-            validateAgainstCedar(cde)
+            retryableRequester.validate(cde)
         }
     }
 
